@@ -1,14 +1,11 @@
 <template>
   <div class="s-canvas">
-      <canvas
-      id="s-canvas"
-      :width="contentWidth"
-      :height="contentHeight"
-      />
-      <p>看不清？点击切换验证码</p>
-  </div> 
+    <canvas id="s-canvas" :width="contentWidth" :height="contentHeight" />
+    <p>看不清？那就多点几次！</p>
+  </div>
 </template>
 <script>
+import { ElMessage } from "element-plus";
 // 创建随机数字典库
 /**
      * 随机数数组
@@ -85,22 +82,23 @@ export default {
   },
   data() {
     return {
-      codes:'',
+      codes: '',
       backNum: 0.4
     }
   },
   methods: {
     // 在自定义字典库里随机生成验证码
-    createVerificationCode(){
-      const { defaultCodeLength:L, repet } = this
+    createVerificationCode() {
+      const { defaultCodeLength: L, repet,codes } = this
       const payload = []
       // 验证码数字是否可重复 关键字：repet
       let sArr = [...Dictionaries]
-     for(let i=0;i < L;i++){
-        const m = Math.floor(Math.random()*(Dictionaries.length))
-        repet ? payload.push(sArr[m]) : payload.push(sArr.splice(m,1)[0])
+      for (let i = 0; i < L; i++) {
+        const m = Math.floor(Math.random() * (Dictionaries.length))
+        repet ? payload.push(sArr[m]) : payload.push(sArr.splice(m, 1)[0])
       }
       this.codes = payload.join('')
+      this.$emit('getCode', codes)
     },
     // 生成一个颜色随机数
     randomNum(min, max) {
@@ -119,10 +117,19 @@ export default {
       this.createVerificationCode()
       let canvas = document.getElementById('s-canvas')
       let ctx = canvas.getContext('2d')
+      // 每次先把canvas状态重置，否则会出现画布重叠的效果
+      canvas.width = canvas.width
       ctx.textBaseline = 'bottom'
       // 绘制背景
-      let num = this.backNum + 0.1
-      ctx.fillStyle = `rgba(64,158,255,${num})`
+      const { backNum: n } = this
+      this.backNum = n < 1 ? n + 0.1 : 0.4
+      n > 1 && ElMessage({
+        type: 'error',
+        showClose: true,
+        message: '可不能太清楚了哦',
+        center: true,
+      })
+      ctx.fillStyle = `rgba(64,158,255,${n})`
       ctx.fillRect(0, 0, this.contentWidth, this.contentHeight)
       // 绘制文字
       for (let i = 0; i < this.codes.length; i++) {
@@ -177,7 +184,7 @@ export default {
 </script>
 <style scoped>
 p {
-  color: #F56C6C;
+  color: #f56c6c;
   text-decoration: underline;
 }
 .s-canvas {

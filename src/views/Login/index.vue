@@ -42,7 +42,7 @@
                   v-model="ruleForm.code"
                 ></el-input>
               </el-form-item>
-              <ver-code ref="verCode" class="login-code" @click="getValidateCodeHandle" />
+              <ver-code ref="childCode" class="login-code" @getCode="getCode" @click="getValidateCodeHandle" />
             </div>
             <el-form-item prop="autoLogin">
               <el-checkbox
@@ -83,8 +83,20 @@ export default defineComponent({
     VerCode,
   },
   setup() {
+    const getCode = (val: String) =>{
+      console.log( val,'这不就船只了吗')
+    }
+    const ruleCode = (rule: any, value: string, callback: (arg0: Error|undefined) => void) => {
+      if (value === '') {
+        callback(new Error('验证码还能空？'))
+      } else if (value !== '') {
+        callback(new Error("fauk"))
+      } else {
+        callback(undefined)
+      }
+    }
     // 登陆逻辑 start
-    const loginForm = ref(null);
+    const loginForm = ref();
     const state = reactive({
       ruleForm: {
         username: "",
@@ -98,11 +110,13 @@ export default defineComponent({
         password: [
           { required: "true", message: "密码不能为空", trigger: "blur" },
         ],
-        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+        code: [
+          { validator: ruleCode, trigger: 'blur' }
+        ],
       },
     });
     const submitForm = async () => {
-      loginForm.value.validate((valid) => {
+      loginForm.value.validate((valid: any) => {
         if (valid) {
           axios
             .post("/adminUser/login", {
@@ -235,7 +249,7 @@ export default defineComponent({
     });
 
     // gui参数
-    function Params() {
+    function Params (){
       this.color = "#000";
       this.length = 10;
       this.size = 3;
@@ -582,11 +596,11 @@ export default defineComponent({
       renderer.render(scene, camera);
     };
 
-    const verCode = ref(null)
-    // 获取验证码
-    const getValidateCodeHandle = async () => {
+    const childCode = ref()
+    // 点击刷新验证码
+    const getValidateCodeHandle = () => {
       // 请求获取验证码 并设置验证码的图片以及验证码token
-      console.log(verCode,'vue3 ref=====')
+      childCode && childCode?.value && childCode?.value?.drawPic()
     };
 
     // 提交表单
@@ -605,16 +619,6 @@ export default defineComponent({
     //   });
     // };
 
-    // 提交请求
-    const submitHandle = async () => {
-      const params = {
-        password: ruleForm.password,
-        username: ruleForm.username,
-        verifyCode: ruleForm.code,
-      };
-      // 提交登陆请求
-    };
-
     const refsState = toRefs(state);
     return {
       ...refsState,
@@ -622,6 +626,8 @@ export default defineComponent({
       // ruleForm,
       // submitForm,
       // formRef,
+      childCode,
+      getCode,
       getValidateCodeHandle,
       ...toRefs(state),
       loginForm,
@@ -735,3 +741,7 @@ export default defineComponent({
   }
 }
 </style>
+
+function to(to: any) {
+  throw new Error("Function not implemented.");
+}
