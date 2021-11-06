@@ -98,7 +98,7 @@ export default {
         repet ? payload.push(sArr[m]) : payload.push(sArr.splice(m, 1)[0])
       }
       this.codes = payload.join('')
-      this.$emit('getCode', codes)
+      this.$emit('getCode', this.codes)
     },
     // 生成一个颜色随机数
     randomNum(min, max) {

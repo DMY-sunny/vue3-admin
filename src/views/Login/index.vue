@@ -83,18 +83,42 @@ export default defineComponent({
     VerCode,
   },
   setup() {
-    const getCode = (val: String) =>{
-      console.log( val,'这不就船只了吗')
-    }
-    const ruleCode = (rule: any, value: string, callback: (arg0: Error|undefined) => void) => {
-      if (value === '') {
-        callback(new Error('验证码还能空？'))
-      } else if (value !== '') {
-        callback(new Error("fauk"))
-      } else {
-        callback(undefined)
-      }
-    }
+    const codeRef = ref("");
+    const getCode = (val: string) => {
+      console.log(
+        `%c ${val}%c\n%c你瞅啥%c开发：咋的，看不懂验证码就看我啊，这人多捞啊得😒`, `
+        padding: 40px 40px;
+        margin-bottom: 5px;
+        line-height: 0px;
+        background-color: #ccc;
+        `, `
+        `, `
+        color: #f3f3f4;
+        margin-bottom: 5px;
+        padding: 4px 3px 4px 11px;
+        background-color: #FF3D45;
+        border-radius: 5px 0 0 5px;
+        `, `
+        color: #5A94C1;
+        margin-bottom: 5px;
+        padding: 4px 11px 4px 3px;
+        background-color: #bfd3de;
+        border-radius: 0 5px 5px 0;
+      `)
+ 
+      codeRef.value = val;
+    };
+    const ruleCode = (
+      rule: any,
+      value: '',
+      callback: (arg0: Error | undefined) => void
+    ) => {
+      if (!value) return callback(new Error("验证码还能空？"));
+
+      if (value !== codeRef.value) callback(new Error("你这眼睛哦，怕不是得看一看"));
+
+      callback(undefined);
+    };
     // 登陆逻辑 start
     const loginForm = ref();
     const state = reactive({
@@ -110,9 +134,7 @@ export default defineComponent({
         password: [
           { required: "true", message: "密码不能为空", trigger: "blur" },
         ],
-        code: [
-          { validator: ruleCode, trigger: 'blur' }
-        ],
+        code: [{ validator: ruleCode, trigger: "blur" }],
       },
     });
     const submitForm = async () => {
@@ -249,7 +271,7 @@ export default defineComponent({
     });
 
     // gui参数
-    function Params (){
+    function Params() {
       this.color = "#000";
       this.length = 10;
       this.size = 3;
@@ -596,11 +618,11 @@ export default defineComponent({
       renderer.render(scene, camera);
     };
 
-    const childCode = ref()
+    const childCode = ref();
     // 点击刷新验证码
     const getValidateCodeHandle = () => {
       // 请求获取验证码 并设置验证码的图片以及验证码token
-      childCode && childCode?.value && childCode?.value?.drawPic()
+      childCode && childCode?.value && childCode?.value?.drawPic();
     };
 
     // 提交表单
