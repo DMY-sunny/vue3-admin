@@ -20,7 +20,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
+      component: () => import(/* webpackChunkName: "login" */ '../views/Login/index.vue')
     },
     {
       path: '/add',

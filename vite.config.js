@@ -2,7 +2,6 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vitePluginImport from 'vite-plugin-babel-import';
 import path from 'path'
-
 const baseUrl = {
   development: './',
   beta: './',
@@ -10,7 +9,7 @@ const baseUrl = {
 }
 
 // https://vitejs.dev/config/
-export default ({ mode }) =>  defineConfig({
+export default ({ mode }) => defineConfig({
   plugins: [
     vue(),
     vitePluginImport([
@@ -21,7 +20,11 @@ export default ({ mode }) =>  defineConfig({
           return `element-plus/lib/theme-chalk/${name}.css`;
         },
       }
-    ])
+    ]),
+    require('postcss-px2rem')({
+      // 基准大小 baseSize，需要和rem.js中相同
+      remUnit: 14
+    })
   ],
   base: baseUrl[mode],
   resolve: {

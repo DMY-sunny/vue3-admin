@@ -56,6 +56,14 @@
               <el-menu-item index="/account"><i class="el-icon-lock" />修改密码</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
+          <el-submenu index="5">
+            <template #title>
+              <span>测试页</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="/login_three"><i class="el-icon-bank-card" />3D登陆</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <el-container class="content">

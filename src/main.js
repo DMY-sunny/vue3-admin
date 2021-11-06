@@ -5,10 +5,16 @@ import { Integrations } from "@sentry/tracing";
 import App from './App.vue'
 import router from './router/index'
 
+import 'element-plus/lib/theme-chalk/index.css'
+import '@/assets/styles/base.scss'
+import '@/assets/styles/overall.scss'
+import '@/assets/styles/resetElement.scss'
+import '@/utils/rem'
+
 // import 'element-plus/lib/theme-chalk/index.css'
 
 // 修改后的主题样式必须放在最后面
-import '../theme/index.css'
+// import '../theme/index.css'
 
 const orderStatus = {
   0: '待支付',
