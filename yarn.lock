@@ -578,6 +578,11 @@
     "@types/mime" "^1"
     "@types/node" "*"
 
+"@types/three@^0.133.1":
+  version "0.133.1"
+  resolved "https://registry.npmmirror.com/@types/three/download/@types/three-0.133.1.tgz?cache=0&sync_timestamp=1634135198519&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fthree%2Fdownload%2F%40types%2Fthree-0.133.1.tgz#6007faaf7f6b53339150a2a1fe57121e4c6607c1"
+  integrity sha1-YAf6r39rUzORUKKh/lcSHkxmB8E=
+
 "@vitejs/plugin-vue@^1.1.4":
   version "1.2.2"
   resolved "https://registry.nlark.com/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.2.2.tgz#b0038fc11b9099f4cd01fcbf0ee419adda417b52"

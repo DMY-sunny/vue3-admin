@@ -9,9 +9,9 @@
           alt=""
         />
         <div class="login-plane-title">
-          <p> 中国🇨🇳航天总局 <br>
+          <div> 中国🇨🇳航天总局 <br>
             <div style="font-size: 12px; color: red;text-align: center;">收复个小台湾，就是简简单单</div>
-          </p>
+          </div>
           <img
             class="login-plane-title-line"
             src="images/login_horizontal_line.png"
@@ -86,36 +86,52 @@ export default defineComponent({
     const codeRef = ref("");
     const getCode = (val: string) => {
       console.log(
-        `%c ${val}%c\n%c你瞅啥%c开发：咋的，看不懂验证码就看我啊，这人多捞啊得😒`, `
-        padding: 40px 40px;
+        `%c${val}%c\n%c你瞅啥%c：咋的，看不懂验证码就看我啊，这人多捞啊得😒
+        %c\n\n%cmy：你可以随时加入我们，但你必须是一个有趣的程序员
+        %c\n\n%c不会真有人要开着控制台看页面吧，不会吧，不会吧`,
+        `padding: 40px 40px;
         margin-bottom: 5px;
         line-height: 0px;
-        background-color: #ccc;
-        `, `
-        `, `
-        color: #f3f3f4;
+        background-color: #ccc;`,
+        ``,
+        `color: #f3f3f4;
         margin-bottom: 5px;
         padding: 4px 3px 4px 11px;
         background-color: #FF3D45;
-        border-radius: 5px 0 0 5px;
-        `, `
-        color: #5A94C1;
+        border-radius: 5px 0 0 5px;`,
+        `color: #5A94C1;
         margin-bottom: 5px;
         padding: 4px 11px 4px 3px;
         background-color: #bfd3de;
-        border-radius: 0 5px 5px 0;
-      `)
- 
+        border-radius: 0 5px 5px 0;`,
+        ``,
+        `color: #9ed048;
+        font: italic bold 20px 'sans-serif', 楷体;
+        font-size: 22px;
+        font-wweight: bold;
+        display: inline-block;
+        margin: 0 auto;
+        text-align: center;
+        padding: 4px 11px 4px 3px;
+        background-color: #161823;
+        border-radius: 0 5px 5px 0;`,
+        ``,
+        `font: bold 14px 'Arial', 宋体;
+        color: #3d3b4f;
+        background-color: #88ada6;`,
+        )
+
       codeRef.value = val;
     };
     const ruleCode = (
       rule: any,
-      value: '',
+      value: "",
       callback: (arg0: Error | undefined) => void
     ) => {
       if (!value) return callback(new Error("验证码还能空？"));
 
-      if (value !== codeRef.value) callback(new Error("你这眼睛哦，怕不是得看一看"));
+      if (value !== codeRef.value)
+        callback(new Error("你这眼睛哦，怕不是得看一看"));
 
       callback(undefined);
     };
@@ -145,7 +161,7 @@ export default defineComponent({
               userName: state.ruleForm.username || "",
               passwordMd5: md5(state.ruleForm.password),
             })
-            .then((res) => {
+            .then((res: any) => {
               localSet("token", res);
               window.location.href = "/";
             });
@@ -211,23 +227,6 @@ export default defineComponent({
     let renderer: any;
     // 声明调试工具
     let gui = new GUI();
-
-    // 表单对象
-    // const formRef = ref(null);
-
-    // 响应式对象 - 表单对象
-    // const ruleForm = reactive({
-    //   username: "",
-    //   password: "",
-    //   code: "",
-    // });
-
-    // 表单校验规则
-    // const rules = {
-    //   username: [{ required: true, message: "请输入用户名账号", trigger: "blur" }],
-    //   password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-    //   code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
-    // };
 
     onMounted(() => {
       container = document.getElementById("login-three-container");
@@ -599,7 +598,7 @@ export default defineComponent({
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       container.appendChild(renderer.domElement);
-      container.appendChild(stats.dom);
+      container.appendChild(stats.domElement); // 渲染性能模块
       renderCloudMove_first = initCloudMove(cloudParameter_first, 0.0002);
       renderCloudMove_second = initCloudMove(
         cloudParameter_second,
@@ -615,6 +614,7 @@ export default defineComponent({
       renderStarMove();
       renderCloudMove_first();
       renderCloudMove_second();
+      stats.update();// 更新性能插件
       renderer.render(scene, camera);
     };
 
